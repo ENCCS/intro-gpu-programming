@@ -17,11 +17,11 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "LESSON NAME"
-copyright = "2021, The contributors"
+project = "GPU programming: why, when and how?"
+copyright = "2023, The contributors"
 author = "The contributors"
 github_user = "ENCCS"
-github_repo_name = ""  # auto-detected from dirname if blank
+github_repo_name = "gpu-programming"  # auto-detected from dirname if blank
 github_version = "main"
 conf_py_path = "/content/"  # with leading and trailing slash
 
@@ -123,6 +123,60 @@ class TypealongDirective(_BaseCRDirective):
 DIRECTIVES = [SignatureDirective, ParametersDirective, TypealongDirective]
 
 
+abbr_map = { }
+abbr_map['grid'] = "In OpenCL and SYCL: NDRange."
+abbr_map['block'] = "In OpenCL and SYCL: work-group."
+abbr_map['warp'] = "In HIP: wavefront. In OpenCL and SYCL: sub-group."
+abbr_map['thread'] = "In OpenCL and SYCL: work-item."
+abbr_map['grid'] = "In OpenCL and SYCL: NDRange."
+abbr_map['register'] = "In OpenCL and SYCL: private memory."
+abbr_map['shared memory'] = "In OpenCL and SYCL: local memory (not to be confused with CUDA and HIP local memory)."
+abbr_map['Grid'] = abbr_map['grid']
+abbr_map['grids'] = abbr_map['grid']
+abbr_map['Grids'] = abbr_map['grid']
+abbr_map['Block'] = abbr_map['block']
+abbr_map['blocks'] = abbr_map['block']
+abbr_map['Blocks'] = abbr_map['block']
+abbr_map['Warp'] = abbr_map['warp']
+abbr_map['warps'] = abbr_map['warp']
+abbr_map['Warps'] = abbr_map['warp']
+abbr_map['Thread'] = abbr_map['thread']
+abbr_map['threads'] = abbr_map['thread']
+abbr_map['Threads'] = abbr_map['thread']
+
+
+from docutils import nodes
+from sphinx import roles
+import logging
+import sphinx.util.logging
+
+class AutoAbbreviation(roles.Abbreviation):
+    """A derivative of the Sphinx `abbr`, but with defaults.
+
+    Used as :abbr:`name`.
+    """
+
+    _logger = sphinx.util.logging.getLogger('auto-abbr')
+
+    def run(self):
+        if '(' not in self.text:
+            if self.text in abbr_map:
+                options = self.options.copy()
+                options['explanation'] = abbr_map[self.text]
+                return [nodes.abbreviation(self.rawtext, self.text, **options)], []
+            self._logger.warning("Abbreviation with no definition (%s): %s:%s",
+                                 self.rawtext, *self.get_source_info())
+        return super().run()
+
+
 def setup(app):
     for obj in DIRECTIVES:
         app.add_directive(obj.cssname(), obj)
+
+    app.add_role('abbr', AutoAbbreviation(), override=True)
+    
+import os
+if os.environ.get('GITHUB_REF', '') == 'refs/heads/main':
+    html_js_files = [
+        ('https://plausible.io/js/script.js', {"data-domain": "enccs.github.io/gpu-programming", "defer": "defer"}),
+    ]    
