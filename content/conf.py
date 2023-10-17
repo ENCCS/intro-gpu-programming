@@ -17,11 +17,11 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "GPU programming: why, when and how?"
+project = "Introduction to GPU Programming"
 copyright = "2023, The contributors"
 author = "The contributors"
 github_user = "ENCCS"
-github_repo_name = "gpu-programming"  # auto-detected from dirname if blank
+github_repo_name = "intro-gpu-programming"  # auto-detected from dirname if blank
 github_version = "main"
 conf_py_path = "/content/"  # with leading and trailing slash
 
@@ -174,9 +174,9 @@ def setup(app):
         app.add_directive(obj.cssname(), obj)
 
     app.add_role('abbr', AutoAbbreviation(), override=True)
-    
+
 import os
 if os.environ.get('GITHUB_REF', '') == 'refs/heads/main':
     html_js_files = [
         ('https://plausible.io/js/script.js', {"data-domain": "enccs.github.io/gpu-programming", "defer": "defer"}),
-    ]    
+    ]

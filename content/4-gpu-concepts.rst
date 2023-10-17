@@ -13,7 +13,7 @@ GPU programming concepts
 .. objectives::
 
    - Understand parallel computing principles and architectures.
-   - Differentiate data parallelism from task parallelism. 
+   - Differentiate data parallelism from task parallelism.
    - Learn the GPU execution model.
    - Parallelize and execute work on GPUs.
    - Develop efficient GPU code for high performance.
@@ -30,47 +30,47 @@ Different types of parallelism
 Distributed- vs. Shared-Memory Architecture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most of computing problems are not trivially parallelizable, which means that the subtasks 
-need to have access from time to time to some of the results computed by other subtasks. 
+Most of computing problems are not trivially parallelizable, which means that the subtasks
+need to have access from time to time to some of the results computed by other subtasks.
 The way subtasks exchange needed information depends on the available hardware.
 
-.. figure:: img/history/distributed_vs_shared.png
+.. figure:: img/concepts/distributed-vs-shared.png
    :align: center
-   
+
    Distributed- vs shared-memory parallel computing.
 
-In a distributed memory environment each computing unit operates independently from the 
-others. It has its own memory and it  **cannot** access the memory in other nodes. 
-The communication is done via network and each computing unit runs a separate copy of the 
-operating system. In a shared memory machine all computing units have access to the memory 
+In a distributed memory environment each computing unit operates independently from the
+others. It has its own memory and it  **cannot** access the memory in other nodes.
+The communication is done via network and each computing unit runs a separate copy of the
+operating system. In a shared memory machine all computing units have access to the memory
 and can read or modify the variables within.
 
 Processes and threads
 ~~~~~~~~~~~~~~~~~~~~~
 
-The type of environment (distributed- or shared-memory) determines the programming model. 
-There are two types of parallelism possible, process based and thread based. 
+The type of environment (distributed- or shared-memory) determines the programming model.
+There are two types of parallelism possible, process based and thread based.
 
 .. figure:: img/history/processes-threads.png
    :align: center
 
-For distributed memory machines, a process-based parallel programming model is employed. 
-The processes are independent execution units which have their *own memory* address spaces. 
-They are created when the parallel program is started and they are only terminated at the 
+For distributed memory machines, a process-based parallel programming model is employed.
+The processes are independent execution units which have their *own memory* address spaces.
+They are created when the parallel program is started and they are only terminated at the
 end. The communication between them is done explicitly via message passing like MPI.
 
-On the shared memory architectures it is possible to use a thread based parallelism.  
-The threads are light execution units and can be created and destroyed at a relatively 
-small cost. The threads have their own state information but they *share* the *same memory* 
-address space. When needed the communication is done though the shared memory. 
+On the shared memory architectures it is possible to use a thread based parallelism.
+The threads are light execution units and can be created and destroyed at a relatively
+small cost. The threads have their own state information but they *share* the *same memory*
+address space. When needed the communication is done though the shared memory.
 
 
-Both approaches have their advantages and disadvantages.  Distributed machines are 
-relatively cheap to build and they  have an "infinite " capacity. In principle one could 
-add more and more computing units. In practice the more computing units are used the more 
-time consuming is the communication. The shared memory systems can achieve good performance 
-and the programming model is quite simple. However they are limited by the memory capacity 
-and by the access speed. In addition in the shared parallel model it is much easier to 
+Both approaches have their advantages and disadvantages.  Distributed machines are
+relatively cheap to build and they  have an "infinite " capacity. In principle one could
+add more and more computing units. In practice the more computing units are used the more
+time consuming is the communication. The shared memory systems can achieve good performance
+and the programming model is quite simple. However they are limited by the memory capacity
+and by the access speed. In addition in the shared parallel model it is much easier to
 create race conditions.
 
 
@@ -83,7 +83,7 @@ The units process the data by applying the same or very similar operation to dif
 A common example is applying a blur filter to an image --- the same function is applied to all the pixels on an image.
 This parallelism is natural for the GPU, where the same instruction set is executed in multiple :abbr:`threads`.
 
-.. figure:: img/concepts/ENCCS-OpenACC-CUDA_TaskParallelism_Explanation.png
+.. figure:: img/concepts/data-task-parallelism.png
     :align: center
     :scale: 40 %
 
@@ -113,11 +113,11 @@ Note that the tasks can consume totally different resources, which also can be e
    - Data parallelism distributes data across computational units, processing them with the same or similar operations.
    - Task parallelism involves multiple independent tasks that perform different operations on the same or different data.
    - Task parallelism involves executing different tasks concurrently, leveraging different resources.
-   
+
 GPU Execution Model
 -------------------
 
-In order to obtain maximum performance it is important to understand how GPUs execute the programs. As mentioned before a CPU is a flexible device oriented towards general purpose usage. It's fast and versatile, designed to run operating systems and various, very different types of applications. It has lots of features, such as better control logic, caches and cache coherence, that are not related to pure computing. CPUs optimize the execution by trying to achieve low latency via heavy caching and branch prediction. 
+In order to obtain maximum performance it is important to understand how GPUs execute the programs. As mentioned before a CPU is a flexible device oriented towards general purpose usage. It's fast and versatile, designed to run operating systems and various, very different types of applications. It has lots of features, such as better control logic, caches and cache coherence, that are not related to pure computing. CPUs optimize the execution by trying to achieve low latency via heavy caching and branch prediction.
 
 .. figure:: img/concepts/cpu-gpu-highway.png
     :align: center
@@ -131,32 +131,32 @@ In contrast the GPUs contain a relatively small amount of transistors dedicated 
 CUDA Threads, Warps, Blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to perform some work the program launches a function called *kernel*, which is executed simultaneously by tens of thousands of :abbr:`threads` that can be run on GPU cores parallelly. GPU threads are much lighter than the usual CPU threads and they have very little penalty for context switching. By "over-subscribing" the GPU there are threads that are performing some memory operations (reading or writing), while others execute instructions.  
+In order to perform some work the program launches a function called *kernel*, which is executed simultaneously by tens of thousands of :abbr:`threads` that can be run on GPU cores parallelly. GPU threads are much lighter than the usual CPU threads and they have very little penalty for context switching. By "over-subscribing" the GPU there are threads that are performing some memory operations (reading or writing), while others execute instructions.
 
-.. figure:: img/concepts/THREAD_CORE.png
+.. figure:: img/concepts/thread-core.jpg
     :align: center
     :scale: 40 %
 
-Every :abbr:`thread` is associated with a particular intrinsic index which can be used to calculate and access  memory locations in an array. Each thread has its context and set of private variables. All threads have access to the global GPU memory, but there is no general way to synchronize when executing a kernel. If some threads need data from the global memory which was modified by other threads the code would have to be splitted in several kernels because only at the completion of a kernel it is ensured that the writing to the global memory was completed.  
+Every :abbr:`thread` is associated with a particular intrinsic index which can be used to calculate and access  memory locations in an array. Each thread has its context and set of private variables. All threads have access to the global GPU memory, but there is no general way to synchronize when executing a kernel. If some threads need data from the global memory which was modified by other threads the code would have to be splitted in several kernels because only at the completion of a kernel it is ensured that the writing to the global memory was completed.
 
-Apart from being much light weighted there are more differences between GPU threads and CPU threads. GPU :abbr:`threads` are grouped together in groups called :abbr:`warps`. This done at hardware level. 
+Apart from being much light weighted there are more differences between GPU threads and CPU threads. GPU :abbr:`threads` are grouped together in groups called :abbr:`warps`. This done at hardware level.
 
-.. figure:: img/concepts/WARP_SMTU.png
+.. figure:: img/concepts/warp-simt.jpg
     :align: center
     :scale: 40 %
-    
-    
+
+
 All memory accesses to the GPU memory are as a group in blocks of specific sizes (32B, 64B, 128B etc.). To obtain good performance the CUDA threads in the same warp need to access elements of the data which are adjacent in the memory. This is called *coalesced* memory access.
 
 
-On some architectures, all members of a :abbr:`warp` have to execute the 
-same instruction, the so-called "lock-step" execution. This is done to achieve 
-higher performance, but there are some drawbacks. If an **if** statement 
-is present inside a :abbr:`warp` will cause the warp to be executed more than once, 
+On some architectures, all members of a :abbr:`warp` have to execute the
+same instruction, the so-called "lock-step" execution. This is done to achieve
+higher performance, but there are some drawbacks. If an **if** statement
+is present inside a :abbr:`warp` will cause the warp to be executed more than once,
 one time for each branch. When different threads within a single :abbr:`warp`
 take different execution paths based on a conditional statement (if), both
 branches are executed sequentially, with some threads being active while
-others are inactive. On architectures without lock-step execution, such 
+others are inactive. On architectures without lock-step execution, such
 as NVIDIA Volta / Turing (e.g., GeForce 16xx-series) or newer, :abbr:`warp`
 divergence is less costly.
 
@@ -164,7 +164,7 @@ There is another level in the GPU :abbr:`threads` hierarchy. The :abbr:`threads`
 
 
 
-.. figure:: img/concepts/BLOCK_SMP.png
+.. figure:: img/concepts/block-smp.jpg
     :align: center
     :scale: 40 %
 
@@ -173,7 +173,7 @@ There is another level in the GPU :abbr:`threads` hierarchy. The :abbr:`threads`
 Finally, a block of threads can not be splitted among SMPs. For performance blocks should have more than one :abbr:`warp`. The more warps are active on an SMP the better is hidden the latency associated with the memory operations. If the resources are sufficient, due to fast context switching, an SMP can have more than one block active in the same time. However these blocks can not share data with each other via the on-chip memory.
 
 
-To summarize this section. In order to take advantage of GPUs the algorithms must allow the division of work in many small subtasks which can be executed in the same time. The computations are offloaded to GPUs, by launching tens of thousands of threads all executing the same function, *kernel*, each thread working on different part of the problem. The threads are executed in groups called *blocks*, each block being assigned to a SMP. Furthermore the threads of a block are divided in *warps*, each executed by SIMT unit. All threads in a warp execute the same instructions and all memory accesses are done collectively at warp level. The threads can synchronize and share data only at block level. Depending on the architecture, some data sharing can be done as well at warp level. 
+To summarize this section. In order to take advantage of GPUs the algorithms must allow the division of work in many small subtasks which can be executed in the same time. The computations are offloaded to GPUs, by launching tens of thousands of threads all executing the same function, *kernel*, each thread working on different part of the problem. The threads are executed in groups called *blocks*, each block being assigned to a SMP. Furthermore the threads of a block are divided in *warps*, each executed by SIMT unit. All threads in a warp execute the same instructions and all memory accesses are done collectively at warp level. The threads can synchronize and share data only at block level. Depending on the architecture, some data sharing can be done as well at warp level.
 
 In order to hide latencies it is recommended to "over-subscribe" the GPU. There should be many more blocks than SMPs present on the device. Also in order to ensure a good occupancy of the CUDA cores there should be more warps active on a given SMP than SIMT units. This way while some warps of threads are idle waiting for some memory operations to complete, others use the CUDA cores, thus ensuring a high occupancy of the GPU.
 
@@ -183,7 +183,7 @@ Below there is an example of how the threads in a grid can be associated with sp
 
 
 
-.. figure:: img/concepts/Indexing.png
+.. figure:: img/concepts/indexing.png
     :align: center
     :scale: 40 %
 
@@ -239,9 +239,9 @@ Software
    | blockDim.\{x,y,z\}                                | get_local_size(\{0,1,2\}) | nd_item::get_local_range(\{2,1,0\}) [#syclindex]_ |
    +-------------------------+-------------------------+---------------------------+---------------------------------------------------+
 
-.. [#syclindex] In SYCL, the thread indexing is inverted. In a 3D grid, physically adjacent threads have consecutive X (0) index in CUDA, HIP, and OpenCL, but consecutive Z (2) index in SYCL. 
+.. [#syclindex] In SYCL, the thread indexing is inverted. In a 3D grid, physically adjacent threads have consecutive X (0) index in CUDA, HIP, and OpenCL, but consecutive Z (2) index in SYCL.
    In a 2D grid, CUDA, HIP, and OpenCL still has contiguous indexing along X (0) dimension, while in SYCL it is Y (1).
-   Same applies to block dimensions and indexing. 
+   Same applies to block dimensions and indexing.
 
 
 Exercises
@@ -277,7 +277,7 @@ Exercises
    d) Neither data nor task parallelism
 
    .. solution::
-      
+
       Correct answer: *b) Data Parallelism*
 
 .. challenge:: What is a kernel in the context of GPU execution?
@@ -285,9 +285,9 @@ Exercises
    a) A specific section of the CPU used for memory operations.
    b) A specific section of the GPU used for memory operations.
    c) A type of thread that operates on the GPU.
-   d) A function that is executed simultaneously by tens of thousands of threads on GPU cores.   
+   d) A function that is executed simultaneously by tens of thousands of threads on GPU cores.
 
-   .. solution:: 
+   .. solution::
 
       Correct answer: *d) A function that is executed simultaneously by tens of thousands of threads on GPU cores.*
 

@@ -51,9 +51,23 @@ mentioned above to a level which will enable you to quickly become a productive 
 
 .. toctree::
    :maxdepth: 1
-   :caption: Prerequisites and Instructor’s guide
+   :caption: Prerequisites
 
    0-setup
+
+.. toctree::
+   :maxdepth: 1
+   :caption: The lesson
+
+   1-gpu-history
+   2-gpu-ecosystem
+   3-gpu-problems
+   4-gpu-concepts
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Instructor’s guide
+
    guide
 
 .. toctree::
