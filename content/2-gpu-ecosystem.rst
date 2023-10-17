@@ -188,7 +188,6 @@ Apart from what was presented above there are many others tools and features pro
 ROCm
 ^^^^
 
-
 ROCm is an open software platform allowing researchers to tap the power of AMD accelerators.
 The ROCm platform is built on the foundation of open portability, supporting environments across multiple
 accelerator vendors and architectures. In some way it is very similar to CUDA API.
@@ -218,7 +217,6 @@ This can be complemented with additional toolkits. The **Intel oneAPI HPC Toolki
 
 oneAPI supports multiple programming models and programming languages. It enables developers to write **OpenMP** codes targeting multi-core CPUs and Intel GPUs using the Classic Fortran and C++ compilers and as well **SYCL** programs for GPUs and FPGAs using the **DPC++** compiler. Initially, the **DPC++** compiler only targeted Intel GPUs using the **oneAPI Level Zero** low-level programming interface, but now support for NVIDIA GPUs (using  CUDA) and AMD GPUs (using ROCm) has been added.
 Overall, Intel oneAPI offers a comprehensive and unified approach to heterogeneous computing, empowering developers to optimize and deploy applications across different architectures with ease. By abstracting the complexities and providing a consistent programming interface, oneAPI promotes code reusability, productivity, and performance portability, making it an invaluable toolkit for developers in the era of diverse computing platforms.
-
 
 
 Differences and similarities

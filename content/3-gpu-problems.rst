@@ -45,6 +45,7 @@ Specifically, you can expect good performance on GPUs for:
 - **Big data analytics**: Clustering, classification, regression, etc.
 - **Graphics rendering**: Original use-case for GPUs.
 
+
 What are GPUs not good for
 --------------------------
 
@@ -77,6 +78,7 @@ Some types of problems that do not fit well on a GPU include:
 - **Memory-bound problems**: GPUs generally have less memory available compared to CPUs, and their memory bandwidth
   can be a limiting factor. If a problem requires a large amount of memory or involves memory-intensive operations,
   it may not be well-suited for a GPU.
+
 
 Examples of GPU acceleration
 ----------------------------
@@ -145,20 +147,28 @@ To give a flavor of what type of performance gains we can achieve by porting a c
            - 5.910 ms
            - ~550x / ~27x
 
+
 Electronic structure calculations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-VASP is a popular software package used for electronic structure calculations. The figures below show the speedup observed in a recent benchmark study on the Perlmutter and Cori supercomputers, along with an analysis of total energy usage.
+VASP is a popular software package used for electronic structure calculations.
+The figures below show the speedup observed in a recent benchmark study on the
+Perlmutter and Cori supercomputers, along with an analysis of total energy usage.
 
 .. figure:: img/problems/vasp-gpu.png
    :align: center
 
-   VASP GPU speedup for benchmark Si128 acfdtr. The horizontal axis shows the number of nodes, and the vertical axis shows the GPU speedup of VASP (Time(CPU)/Time(GPU)). (Recent unpublished benchmarks of VASP on NVIDIA A100 GPUs).
+   VASP GPU speedup for benchmark Si128 acfdtr. The horizontal axis shows the number
+   of nodes, and the vertical axis shows the GPU speedup of VASP (Time(CPU)/Time(GPU)).
+   (Recent unpublished benchmarks of VASP on NVIDIA A100 GPUs).
 
 .. figure:: img/problems/vasp-energy.png
    :align: center
 
-   Total energy usage comparison when running VASP on Perlmutter and Cori. The vertical axis shows the energy used by VASP benchmark jobs on Perlmutter GPUs (blue bars), CPUs (red bars), Cori KNL (yellow bars), and Cori Haswell (green bars) in ratio to the Cori Haswell usage.  (Recent unpublished benchmarks of VASP on NVIDIA A100 GPUs)
+   Total energy usage comparison when running VASP on Perlmutter and Cori. The vertical
+   axis shows the energy used by VASP benchmark jobs on Perlmutter GPUs (blue bars),
+   CPUs (red bars), Cori KNL (yellow bars), and Cori Haswell (green bars) in ratio
+   to the Cori Haswell usage (Recent unpublished benchmarks of VASP on NVIDIA A100 GPUs).
 
 
 
@@ -173,10 +183,11 @@ Fock matrix whose elements are given by:
 .. math::
     F_{\alpha \beta} = H^{\textrm{core}}_{\alpha \beta} + \sum_{\gamma \delta}D_{\gamma \delta} \left [ (\alpha \beta|\gamma \delta) - \frac{1}{2} (\alpha \delta|\gamma \beta) \right ],
 
-The first term is related to the one electron contributions and the second term is related to the
-electron repulsion integrals (ERIs), in parenthesis, weighted by the by the density matrix
-:math:`D_{\gamma \delta}`. One of the most expensive parts in the solution of the Hartree-Fock equations is the
-processing (digestion) of the ERIs, one algorithm to do this task is as follows:
+The first term is related to the one electron contributions and the second term is
+related to the electron repulsion integrals (ERIs), in parenthesis, weighted by the
+by the density matrix :math:`D_{\gamma \delta}`. One of the most expensive parts in
+the solution of the Hartree-Fock equations is the processing (digestion) of the ERIs,
+one algorithm to do this task is as follows:
 
 .. figure:: img/problems/hartree-fock-algorithm.png
     :width: 200
@@ -216,7 +227,14 @@ preserve the site for future researchers to gain critical insights and contribut
 
 Techniques such as Markov Chain Monte Carlo (MCMC) sampling have proven to be invaluable in studies that delve into human behavior or population dynamics. MCMC sampling allows researchers to simulate and analyze complex systems by iteratively sampling from a Markov chain, enabling the exploration of high-dimensional parameter spaces. This method is particularly useful when studying human behavior, as it can capture the inherent randomness and interdependencies that characterize social systems. By leveraging MCMC sampling, researchers can gain insights into various aspects of human behavior, such as decision-making, social interactions, and the spread of information or diseases within populations.
 
-By offloading the computational workload to GPUs, researchers can experience substantial speedup in the execution of MCMC algorithms. This speedup allows for more extensive exploration of parameter spaces and facilitates the analysis of larger datasets, leading to more accurate and detailed insights into human behavior or population dynamics. Examples of studies done using these methods can be found at the `Center for Humanities Computing Aarhus <https://chc.au.dk/>`__ (CHCAA) and `Interacting Minds Centre <https://interactingminds.au.dk/>`__ (IMC) at Aarhus University.
+By offloading the computational workload to GPUs, researchers can experience substantial
+speedup in the execution of MCMC algorithms. This speedup allows for more extensive
+exploration of parameter spaces and facilitates the analysis of larger datasets,
+leading to more accurate and detailed insights into human behavior or population
+dynamics. Examples of studies done using these methods can be found at the
+`Center for Humanities Computing Aarhus <https://chc.au.dk/>`__ (CHCAA) and
+`Interacting Minds Centre <https://interactingminds.au.dk/>`__ (IMC) at Aarhus University.
+
 
 Exercises
 ---------

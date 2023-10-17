@@ -106,8 +106,7 @@ Credits
 -------
 
 Several sections in this lesson have been adapted from the following sources created by
-`ENCCS <https://enccs.se/>`__ and `CSC <https://csc.fi/>`__, which are
-all distributed under a
+`ENCCS <https://enccs.se/>`__ and `CSC <https://csc.fi/>`__, which are all distributed under a
 `Creative Commons Attribution license (CC-BY-4.0) <https://creativecommons.org/licenses/by/4.0/>`__:
 
 - `High Performance Data Analytics in Python <https://enccs.github.io/hpda-python/>`__
@@ -117,8 +116,7 @@ all distributed under a
 The lesson file structure and browsing layout is inspired by and derived from
 `work <https://github.com/coderefinery/sphinx-lesson>`__ by `CodeRefinery
 <https://coderefinery.org/>`__ licensed under the `MIT license
-<http://opensource.org/licenses/mit-license.html>`__. We have copied and adapted
-most of their license text.
+<http://opensource.org/licenses/mit-license.html>`__. We have copied and adapted most of their license text.
 
 
 Instructional Material
